@@ -92,7 +92,7 @@ public class Home implements ActionListener {
 			p2.setVisible(true);
 			f.dispatchEvent(new WindowEvent(f, WindowEvent.WINDOW_CLOSING));
 			Switch s = new Switch();
-			//s.dis();
+			s.dis();
 		}
 		
 	}

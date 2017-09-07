@@ -185,11 +185,13 @@ try {
 			}
 			relationFrom.setText(oneArtifact.toString());
 			
+			con.close();
 	}catch (SQLException e1) {
 		
 		// TODO Auto-generated catch block
 		e1.printStackTrace();
 	}
+	
 		
 		relationFromInput.setBounds(190, 250, 120, 30);
 		relationFromInput.setVisible(false);
@@ -278,8 +280,9 @@ try {
 				while(rs.next()){
 					String lay = rs.getString("layers");
 					System.out.println(lay);
+					layersList.add(lay);
 					if(lay.equals(layer)){
-						layersList.add(lay);
+						
 						t=1;
 					}
 				}
@@ -288,7 +291,7 @@ try {
 					JOptionPane.showMessageDialog(f, "The specified layer already exist!");
 				}
 				else{
-					layersList.add(rank-1, layer);
+					//layersList.add(rank-1, layer);
 					
 					String drop = "DROP TABLE layer";
 					PreparedStatement ps = con.prepareStatement(drop);
@@ -298,12 +301,23 @@ try {
 					
 					String table = "CREATE TABLE layer (layers VARCHAR(50));";
 					s.executeUpdate(table);
-					
-					for (String i : layersList){
+					int tt=0;
+					for (int i=0 ;i<=layersList.size();i++){
+						//System.out.println("FUCK");
+						if(i==rank-1){
+							String query = "INSERT INTO layer (layers)"+ "values(?)";
+							ps = con.prepareStatement(query);
+							ps.setString(1, layer);
+							ps.execute();
+						}
+						else{
 						String query = "INSERT INTO layer (layers)"+ "values(?)";
 						ps = con.prepareStatement(query);
-						ps.setString(1, i);
+						ps.setString(1, layersList.get(tt));
 						ps.execute();
+						tt++;
+						}
+						
 						
 					}
 					
@@ -349,6 +363,7 @@ try {
 						
 					}
 				}
+				con.close();
 				
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
@@ -425,7 +440,7 @@ try {
 				artifactDisplay.setText(oneArtifact.toString());
 				
 				}
-				
+				con.close();
 		}catch (SQLException e1) {
 			
 			// TODO Auto-generated catch block
@@ -447,6 +462,68 @@ try {
 		else if(e.getSource()==remove){
 			String delLay = layerInput.getText().toString();
 			
+			try {
+				Class.forName("com.mysql.jdbc.Driver");
+			} catch (ClassNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+			try {
+				Connection con = DriverManager.getConnection(  "jdbc:mysql://localhost:3306/lay_at","root","root");
+				Statement s = con.createStatement();
+				
+				int response = JOptionPane.showConfirmDialog(null, "Do you want to continue?", "Confirm",
+				        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+				    if (response == JOptionPane.NO_OPTION) {
+				      
+				    } else if (response == JOptionPane.YES_OPTION) {
+				    	String q = "DELETE FROM layer WHERE layers='"+delLay+"'";
+				    	s.execute(q);
+				    	
+				    	ArrayList<String> agroup = new ArrayList<String>();
+				    	ArrayList<String> artifact = new ArrayList<String>();
+				    	
+				    	q = "SELECT * FROM artifactGroup;";
+				    	ResultSet rs = s.executeQuery(q);
+				    	
+				    	while(rs.next()){
+							String agrp = rs.getString("aGroup");
+							String lay = rs.getString("layer");
+							if (lay.equals(delLay)){
+								agroup.add(agrp);
+							}
+						}
+				    	
+				    	q = "DELETE FROM artifactGroup WHERE layer='"+delLay+"'";
+				    	s.execute(q);
+				    	
+				    	q = "SELECT * FROM artifact";
+				    	ResultSet rs1 = s.executeQuery(q);
+				    	while(rs1.next()){
+				    		String arti = rs1.getString("artifact");
+				    		String lay = rs1.getString("layer");
+				    		if(lay.equals(delLay)){
+				    			artifact.add(arti);
+				    		}
+				    				
+				    	}
+				    	
+				    	q = "DELETE FROM artifact WHERE layer='"+delLay+"'";
+				    	s.execute(q);
+				    	
+				    	for(String delElement : artifact){
+							q = "DELETE FROM relation WHERE artifactFrom='"+delElement+"' OR artifactTo='"+delElement+"';";
+							 s.executeUpdate(q);
+						}
+				    	
+				    }
+				
+				    con.close();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 	}
 

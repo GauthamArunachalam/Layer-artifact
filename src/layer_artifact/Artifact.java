@@ -143,7 +143,10 @@ public class Artifact implements ActionListener{
 			artifactGroupSelect.setModel(new DefaultComboBoxModel(arrayList.toArray()));
 			artifactGroupSelect.setBounds(165,150,120,30);
 			artifactGroupSelect.setVisible(false);
-			p2.add(artifactGroupSelect);}
+			p2.add(artifactGroupSelect);
+			con.close();
+		}
+
 		catch (SQLException | ClassNotFoundException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -171,7 +174,7 @@ public class Artifact implements ActionListener{
 			layerSelect.setBounds(165, 200, 120, 30);
 			layerSelect.setVisible(false);
 			p2.add(layerSelect);
-			
+			con.close();
 			}catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -203,7 +206,7 @@ public class Artifact implements ActionListener{
 				oneArtifact = oneArtifact +artifactList.get(i)+",";
 			}
 			artifactRelationFrom.setText(oneArtifact.toString());
-			
+			con.close();
 	}catch (SQLException e1) {
 		
 		// TODO Auto-generated catch block
@@ -429,7 +432,7 @@ public class Artifact implements ActionListener{
 						
 					}
 				}
-				
+				con.close();
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -496,6 +499,7 @@ public class Artifact implements ActionListener{
 				layerDisplayLabel.setText(disLay.toString());
 				GroupDisplayLayer.setText(disGrp.toString());
 				}
+				con.close();
 		}catch (SQLException e1) {
 			
 			// TODO Auto-generated catch block
@@ -571,7 +575,7 @@ public class Artifact implements ActionListener{
 				 
 				 preparedStmt.executeUpdate();
 				}
-				
+				con.close();
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -617,6 +621,7 @@ public class Artifact implements ActionListener{
 				String q = "DELETE FROM relation WHERE artifactFrom='"+inArtifact+"' OR artifactTo='"+inArtifact+"';";
 				 s.executeUpdate(q);
 				    }
+				    con.close();
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -820,7 +825,7 @@ public class Artifact implements ActionListener{
 							
 						
 				 }
-				 
+				 con.close();
 				
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block

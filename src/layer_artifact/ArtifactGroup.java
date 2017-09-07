@@ -138,7 +138,7 @@ public class ArtifactGroup implements ActionListener{
 			layerList.setBounds(190, 150, 120, 30);
 			layerList.setVisible(false);
 			p2.add(layerList);
-			
+			con.close();
 			}catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -177,7 +177,7 @@ public class ArtifactGroup implements ActionListener{
 				oneArtifact = oneArtifact +artifactList.get(i)+",";
 			}
 			artifactRelationFrom.setText(oneArtifact.toString());
-			
+			con.close();
 	}catch (SQLException e1) {
 		
 		// TODO Auto-generated catch block
@@ -334,7 +334,7 @@ public class ArtifactGroup implements ActionListener{
 						
 					}
 				}
-				
+				con.close();
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -402,7 +402,7 @@ public class ArtifactGroup implements ActionListener{
 				artifactsSet.setText(g.toString());
 				Layer.setText(oneArtifact.toString());
 				}
-				
+				con.close();
 		}catch (SQLException e1) {
 			
 			// TODO Auto-generated catch block
@@ -469,6 +469,7 @@ public class ArtifactGroup implements ActionListener{
 				}
 				
 				    }
+				    con.close();
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -529,7 +530,7 @@ public class ArtifactGroup implements ActionListener{
 						}
 					}
 				
-				
+				 con.close();
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
